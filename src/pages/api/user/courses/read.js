@@ -94,13 +94,14 @@ export default async function (req, res) {
           }
         }
       } else {
+        status = 404;
         resp = {
           message: 'User not found',
         };
       }
     } else {
       resp = {
-        message: 'Expected userid and title',
+        message: 'userid and title required',
       };
     }
     res.status(status).json(resp);
