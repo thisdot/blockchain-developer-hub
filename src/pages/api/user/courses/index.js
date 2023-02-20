@@ -10,6 +10,7 @@ export default async function (req, res) {
   let status = 400;
   let resp = {};
   if (req.method === 'POST') {
+    //target is either read or favourites else get both read and favourites
     const { userid, target } = JSON.parse(req.body);
     const user = await dbUSERS.findOne({ userID: userid }, { _id: 1 });
 

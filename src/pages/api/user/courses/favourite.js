@@ -41,7 +41,7 @@ export default async function (req, res) {
               message: 'Duplicate title found',
             };
           } else if (matchesTitle && action === 0) {
-            // Remove as favourite
+            // Remove as favourite if title found
             const result = await courses.updateOne({
               $pull: {
                 favourites: { title },
@@ -59,6 +59,7 @@ export default async function (req, res) {
               };
             }
           } else if (!matchesTitle && action === 1) {
+            //Add favourite if title not found
             const result = await courses.updateOne({
               $push: {
                 favourites: { title },
@@ -81,6 +82,7 @@ export default async function (req, res) {
             };
           }
         } else {
+          //Here we initiate favourite if courses hasn't been stored at all which means either read or favorite hasn't been initiated
           const result = await new dbUSERCOURSES({
             userID: ObjectId(user._id),
             favourites: [{ title }],

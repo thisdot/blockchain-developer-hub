@@ -46,7 +46,7 @@ export default async function (req, res) {
               _id: 1,
             }
           );
-
+          //Confirming there is no duplicate title
           if (matchesTitle) {
             status = 404;
             resp = {
@@ -72,6 +72,7 @@ export default async function (req, res) {
             }
           }
         } else {
+          //Here we initiate read if courses hasn't been stored at all which means either read or favorite hasn't been initiated
           const result = await new dbUSERCOURSES({
             userID: ObjectId(user._id),
             read: [
