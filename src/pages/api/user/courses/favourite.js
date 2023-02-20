@@ -68,7 +68,7 @@ export default async function (req, res) {
             if (result && result.modifiedCount > 0) {
               status = 200;
               resp = {
-                message: 'Favourite added updated',
+                message: 'Favourite course added',
               };
             } else {
               resp = {
@@ -78,7 +78,7 @@ export default async function (req, res) {
           } else {
             status = 404;
             resp = {
-              message: 'Seems ypu are trying to remove a course that does not exist',
+              message: 'Seems you are trying to remove a course that does not exist',
             };
           }
         } else {
@@ -101,11 +101,14 @@ export default async function (req, res) {
         }
       } else {
         resp = {
-          message: 'Expected userid, title and the action you wanna perform',
+          message: 'User not found',
         };
       }
-
-      res.status(status).json(resp);
+    } else {
+      resp = {
+        message: 'Expected userid, title and action',
+      };
     }
+    res.status(status).json(resp);
   }
 }

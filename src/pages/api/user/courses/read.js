@@ -95,11 +95,14 @@ export default async function (req, res) {
         }
       } else {
         resp = {
-          message: 'Expected userid and title',
+          message: 'User not found',
         };
       }
-
-      res.status(status).json(resp);
+    } else {
+      resp = {
+        message: 'Expected userid and title',
+      };
     }
+    res.status(status).json(resp);
   }
 }
