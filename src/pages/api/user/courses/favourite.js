@@ -55,7 +55,7 @@ export default async function (req, res) {
               };
             } else {
               resp = {
-                message: 'Failed to remove Favourite course',
+                message: 'Failed to remove favourite course',
               };
             }
           } else if (!matchesTitle && action === 1) {
@@ -72,7 +72,7 @@ export default async function (req, res) {
               };
             } else {
               resp = {
-                message: 'Failed to add Favourite course',
+                message: 'Failed to add favourite course',
               };
             }
           } else {
@@ -95,7 +95,7 @@ export default async function (req, res) {
             };
           } else {
             resp = {
-              message: 'Failed to add Favourite course',
+              message: 'Failed to add favourite course',
             };
           }
         }
