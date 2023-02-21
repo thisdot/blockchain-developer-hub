@@ -72,7 +72,7 @@ const WalletBtn = () => {
         disabled={authenticating}
       >
         {authenticating ? (
-          <small className={styles.authenticating}>...</small>
+          <small>...</small>
         ) : (
           <img
             src={isWalletInstalled() ? wallet.adapter.icon : '/icons/disconnected.svg'}
