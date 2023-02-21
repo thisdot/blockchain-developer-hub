@@ -16,7 +16,7 @@ export default async function handler(req, res) {
         if (result && result.modifiedCount > 0) {
           status = 201;
           resp = {
-            message: 'User logged in successfull',
+            message: 'User logged in successful',
           };
         } else {
           resp = {
@@ -32,7 +32,7 @@ export default async function handler(req, res) {
         if (result) {
           status = 200;
           resp = {
-            message: 'User sign up successfull',
+            message: 'User sign up successful',
           };
         } else {
           resp = {
