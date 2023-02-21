@@ -85,7 +85,7 @@ export default async function (req, res) {
           if (savedData) {
             status = 200;
             resp = {
-              message: 'tracking successfull',
+              message: 'tracking successful',
             };
           } else {
             resp = {
