@@ -19,6 +19,6 @@ const USERCOURSES = new Schema({
   },
 });
 
-const dbUSERCOURSES = mongoose.model('usercourses', USERCOURSES);
+const dbUSERCOURSES = mongoose.models.usercourses || mongoose.model('usercourses', USERCOURSES);
 
 module.exports = dbUSERCOURSES;

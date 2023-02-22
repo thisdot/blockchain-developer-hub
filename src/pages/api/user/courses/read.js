@@ -12,14 +12,7 @@ export default async function (req, res) {
     const { userid, title } = JSON.parse(req.body);
 
     if (userid && title) {
-      const user = await dbUSERS.findOne(
-        {
-          userID: userid,
-        },
-        {
-          _id: 1,
-        }
-      );
+      const user = await dbUSERS.findOne({ _id: ObjectId(userid) }, { _id: 1 });
       if (user) {
         const courses = await dbUSERCOURSES.findOne(
           {

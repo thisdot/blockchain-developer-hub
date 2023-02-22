@@ -3,38 +3,9 @@ import data from '@/data/learn.yaml';
 import LearnCrypto from '@/sections/LearnCrypto';
 import styles from '@/styles/pages/LearnPage.module.css';
 import PagePagination from '@/components/PagePagination';
-import { useWallet } from '@solana/wallet-adapter-react';
-import { useEffect } from 'react';
 
 function Learn() {
   const { resources } = data;
-  const { connected, publicKey } = useWallet();
-
-  const getReadCourses = async () => {
-    const coursesResp = await fetch('/api/user/courses', {
-      method: 'POST',
-      body: JSON.stringify({}),
-    });
-    console.log('====================================');
-    console.log(coursesResp);
-    console.log('====================================');
-  };
-  const getReadTutorials = async () => {
-    const tutorialsResp = await fetch('/api/user/tutorials', {
-      method: 'POST',
-      body: JSON.stringify({}),
-    });
-    console.log('====================================');
-    console.log(tutorialsResp);
-    console.log('====================================');
-  };
-
-  useEffect(() => {
-    if (connected && publicKey) {
-      getReadCourses();
-      getReadTutorials();
-    }
-  }, [connected, publicKey]);
   return (
     <div className={styles.container}>
       <LearnHero />

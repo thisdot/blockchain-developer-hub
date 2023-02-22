@@ -3,14 +3,54 @@ import clsx from 'clsx';
 import Card from '@/components/Card';
 import styles from './LearnCrypto.module.css';
 import ShareModal from '@/components/ShareModal';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import NoItemPlaceholder from '@/components/NoItemPlaceholder';
 import HeadingHash from '@/components/HeadingHash';
+import { useUserTrackerContext } from 'src/context/UserTrackerProvider';
 
 function LearnCrypto({ id, name, logo, logoAlt, courses, tutorials }) {
+  const {
+    favCourses,
+    favTutorials,
+    coursesRead,
+    tutorialsRead,
+    updateReadCourses,
+    updateReadTutorials,
+    updateFavCourses,
+    updateFavTutorials,
+  } = useUserTrackerContext();
   const headingClasses = clsx('subtitle-bold', styles.headings);
   const overviewClasses = clsx('text-md--long', styles.overview);
   const [shareItem, setShareItem] = useState(null);
+
+  const checkReadCourse = useCallback(
+    (title) => {
+      const resp = coursesRead && coursesRead.find((res) => res.title === title);
+      return resp ? true : false;
+    },
+    [coursesRead]
+  );
+  const checkFavCourse = useCallback(
+    (title) => {
+      const resp = favCourses && favCourses.find((res) => res.title === title);
+      return resp ? true : false;
+    },
+    [favCourses]
+  );
+  const checkReadTutorial = useCallback(
+    (title) => {
+      const resp = tutorialsRead && tutorialsRead.find((res) => res.title === title);
+      return resp ? true : false;
+    },
+    [tutorialsRead]
+  );
+  const checkFavTutorial = useCallback(
+    (title) => {
+      const resp = favTutorials && favTutorials.find((res) => res.title === title);
+      return resp ? true : false;
+    },
+    [favTutorials]
+  );
 
   return (
     <div id={id} className={styles.container}>
@@ -37,6 +77,10 @@ function LearnCrypto({ id, name, logo, logoAlt, courses, tutorials }) {
                     image={image}
                     href={href}
                     key={index}
+                    favourite={checkFavCourse(title)}
+                    read={checkReadCourse(title)}
+                    onRead={(value) => updateReadCourses({ title: value })}
+                    onFavourite={({ title, action }) => updateFavCourses({ title, action })}
                     onShare={() => setShareItem(href)}
                   />
                 ))}
@@ -64,6 +108,10 @@ function LearnCrypto({ id, name, logo, logoAlt, courses, tutorials }) {
                     description={description}
                     onShare={() => setShareItem(href)}
                     key={index}
+                    favourite={checkFavTutorial(title)}
+                    read={checkReadTutorial(title)}
+                    onRead={(value) => updateReadTutorials({ title: value })}
+                    onFavourite={({ title, action }) => updateFavTutorials({ title, action })}
                   />
                 ))}
               </div>

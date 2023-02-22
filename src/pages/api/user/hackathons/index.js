@@ -19,7 +19,7 @@ export default async function (req, res) {
     const { userid, target } = JSON.parse(req.body);
     //userid and target are required.
     if (userid && target) {
-      const user = await dbUSERS.findOne({ userID: userid }, { _id: 1 });
+      const user = await dbUSERS.findOne({ _id: ObjectId(userid) }, { _id: 1 });
 
       if (user) {
         const hackathons = await dbUSERHACKATHONS.findOne(
@@ -44,9 +44,13 @@ export default async function (req, res) {
             data,
           };
         } else {
-          status = 204;
+          status = 200;
           resp = {
             message: 'Nothing here',
+            data: {
+              read: [],
+              favourite: [],
+            },
           };
         }
       } else {
