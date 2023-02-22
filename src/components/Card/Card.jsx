@@ -20,6 +20,7 @@ function Card({
   prize,
   level,
   onShare,
+  cardType,
 }) {
   const classes = clsx(styles.container, { [styles.light]: variant === 'light' });
   const levelText = level ? level.toLowerCase() : '';
@@ -32,6 +33,10 @@ function Card({
   const hasDate = end_date && start_date;
   const showFooter = online || location || on_demand || hasDate;
   const itsExternalLink = href.startsWith('https://') || href.startsWith('http://') ? true : false;
+
+  // const readFn = () => {
+
+  // }
 
   return (
     <a href={href} target={itsExternalLink ? '_blank' : null} rel="noopener noreferrer">
@@ -118,6 +123,7 @@ Card.propTypes = {
   href: PropTypes.string.isRequired,
   level: PropTypes.string,
   onShare: PropTypes.func,
+  cardType: PropTypes.string,
 };
 
 export default Card;
