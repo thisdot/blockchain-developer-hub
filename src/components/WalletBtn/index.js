@@ -5,9 +5,11 @@ import styles from './WalletBtn.module.css';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
+import { useDataContext } from 'src/context/DataProvider';
 
 const WalletBtn = () => {
   const { publicKey, wallet, disconnect } = useWallet();
+  const { authenticating } = useDataContext();
   const { setVisible } = useWalletModal();
   const [active, setActive] = useState(false);
   const ref = useRef(null);
@@ -63,14 +65,20 @@ const WalletBtn = () => {
         title={wallet ? wallet.adapter.name : 'disconnected'}
         style={{ color: 'white' }}
         onClick={openDropdown}
-        className={styles.wallet_btn_dropdown}
+        className={clsx(styles.wallet_btn_dropdown, {
+          [styles.wallet_btn_dropdown_disconnected]: !isWalletInstalled(),
+          [styles.wallet_btn_dropdown_connecting]: authenticating,
+        })}
+        disabled={authenticating}
       >
-        {
+        {authenticating ? (
+          <small>...</small>
+        ) : (
           <img
             src={isWalletInstalled() ? wallet.adapter.icon : '/icons/disconnected.svg'}
             alt={`${isWalletInstalled() ? wallet.adapter.name : 'disconnected'}` + 'image'}
           />
-        }
+        )}
       </button>
       <ul aria-label="dropdown-list" className={dropdownListClasses} ref={ref} role="menu">
         {!wallet && (

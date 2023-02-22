@@ -7,6 +7,14 @@
   background-color: transparent;
 }
 
+.authenticating {
+  font-size: 2rem;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 .wallet_btn_dropdown {
   width: 3.5rem;
@@ -29,6 +37,15 @@
   object-fit: contain;
 }
 
+.wallet_btn_dropdown_disconnected {
+  animation-name: blinks_disconnected;
+  box-shadow: 0px 0px 50px -10px #e73030;
+}
+.wallet_btn_dropdown_connecting {
+  animation-name: blinks_connecting;
+  box-shadow: 0px 0px 50px -10px #e73030;
+}
+
 @keyframes blinks {
   0% {
     box-shadow: 0px 0px 10px -10px #7fe89d;
@@ -44,5 +61,39 @@
   }
   100% {
     box-shadow: 0px 0px 50px -10px #7fe89d;
+  }
+}
+@keyframes blinks_disconnected {
+  0% {
+    box-shadow: 0px 0px 10px -10px #e73030;
+  }
+  25% {
+    box-shadow: 0px 0px 20px -10px #e73030;
+  }
+  50% {
+    box-shadow: 0px 0px 30px -10px #e73030;
+  }
+  75% {
+    box-shadow: 0px 0px 40px -10px #e73030;
+  }
+  100% {
+    box-shadow: 0px 0px 50px -10px #e73030;
+  }
+}
+@keyframes blinks_connecting {
+  0% {
+    box-shadow: 0px 0px 10px -10px #f1c84e;
+  }
+  25% {
+    box-shadow: 0px 0px 20px -10px #f1c84e;
+  }
+  50% {
+    box-shadow: 0px 0px 30px -10px #f1c84e;
+  }
+  75% {
+    box-shadow: 0px 0px 40px -10px #f1c84e;
+  }
+  100% {
+    box-shadow: 0px 0px 50px -10px #f1c84e;
   }
 }
