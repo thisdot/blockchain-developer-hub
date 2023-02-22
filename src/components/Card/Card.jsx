@@ -33,6 +33,9 @@ function Card({
   const hasDate = end_date && start_date;
   const showFooter = online || location || on_demand || hasDate;
   const itsExternalLink = href.startsWith('https://') || href.startsWith('http://') ? true : false;
+  console.log('====================================');
+  console.log(cardType);
+  console.log('====================================');
 
   // const readFn = () => {
 

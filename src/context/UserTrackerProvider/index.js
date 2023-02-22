@@ -6,6 +6,9 @@ export const UserTrackerProvider = ({ children }) => {
   const [courseRead, setCourseRead] = useState([]);
   const [tutorialRead, setTutorialRead] = useState([]);
 
+  setCourseRead([]);
+  setTutorialRead([]);
+
   return <UserTrackerContext.Provider value={{ courseRead, tutorialRead }}>{children}</UserTrackerContext.Provider>;
 };
 
