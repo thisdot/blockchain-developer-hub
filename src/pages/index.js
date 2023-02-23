@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 import styles from '@/styles/pages/HomePage.module.css';
 import HomepageNewsLetter from '@/sections/HomepageNewsLetter';
 import WalletBtn from '@/components/WalletBtn';
+import HomePageConnectWalletStories from '@/sections/HomePageConnectWallet';
 
 export default function Home({ internal_case_studies }) {
   return (
@@ -17,6 +18,7 @@ export default function Home({ internal_case_studies }) {
       <HomePageBanner />
       <HomepageBlockchain />
       <HomeExplore />
+      <HomePageConnectWalletStories />
       <EcosystemBanner />
       <HomePageImproveSkillsStories />
       <CaseStudyBanner internal_case_studies={internal_case_studies} />
