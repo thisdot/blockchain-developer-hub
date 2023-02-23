@@ -12,7 +12,7 @@ export default async function (req, res) {
   if (req.method === 'POST') {
     const { userid, target } = JSON.parse(req.body);
     if (userid && target) {
-      const user = await dbUSERS.findOne({ userID: userid }, { _id: 1 });
+      const user = await dbUSERS.findOne({ _id: ObjectId(userid) }, { _id: 1 });
 
       if (user) {
         const tutorials = await dbUSERTUTORIALS.findOne(
@@ -37,9 +37,13 @@ export default async function (req, res) {
             data,
           };
         } else {
-          status = 204;
+          status = 200;
           resp = {
             message: 'Nothing here',
+            data: {
+              read: [],
+              favourite: [],
+            },
           };
         }
       } else {

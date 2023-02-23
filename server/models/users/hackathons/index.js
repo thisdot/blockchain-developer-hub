@@ -17,6 +17,6 @@ const USERHACKATHONS = new Schema({
   },
 });
 
-const dbUSERHACKATHONS = mongoose.model('userhackathons', USERHACKATHONS);
+const dbUSERHACKATHONS = mongoose.models.userhackathons || mongoose.model('userhackathons', USERHACKATHONS);
 
 module.exports = dbUSERHACKATHONS;

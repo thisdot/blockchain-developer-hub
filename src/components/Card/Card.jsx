@@ -20,6 +20,10 @@ function Card({
   prize,
   level,
   onShare,
+  onRead,
+  onFavourite,
+  read,
+  favourite,
 }) {
   const classes = clsx(styles.container, { [styles.light]: variant === 'light' });
   const levelText = level ? level.toLowerCase() : '';
@@ -32,9 +36,10 @@ function Card({
   const hasDate = end_date && start_date;
   const showFooter = online || location || on_demand || hasDate;
   const itsExternalLink = href.startsWith('https://') || href.startsWith('http://') ? true : false;
+  console.log(onFavourite); //To be implemented when icon added
 
   return (
-    <a href={href} target={itsExternalLink ? '_blank' : null} rel="noopener noreferrer">
+    <a href={href} target={itsExternalLink ? '_blank' : null} rel="noopener noreferrer" onClick={() => onRead(title)}>
       <div className={classes}>
         {image && (
           <div className={styles.header}>
@@ -45,7 +50,10 @@ function Card({
           <div>
             {subtitle && <span className={subTitleClasses}>{subtitle}</span>}
             <h3 className={titleClasses}>
-              <span>{title}</span>
+              <span>
+                {title} {read !== undefined && ' - read: ' + read}
+                {favourite !== undefined && ' - fav: ' + favourite}
+              </span>
               {onShare && (
                 <button
                   className={styles.shareBtn}
@@ -118,6 +126,10 @@ Card.propTypes = {
   href: PropTypes.string.isRequired,
   level: PropTypes.string,
   onShare: PropTypes.func,
+  onRead: PropTypes.func,
+  onFavourite: PropTypes.func,
+  read: PropTypes.bool,
+  favourite: PropTypes.bool,
 };
 
 export default Card;
