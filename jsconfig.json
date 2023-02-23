@@ -10,6 +10,7 @@
       "@/helpers/*": ["src/helpers/*"],
       "@/styles/*": ["src/styles/*"],
       "@/hooks/*": ["src/hooks/*"],
+      "@/context/*": ["src/context/*"],
       "@/icons/*": ["public/icons/*"]
     }
   }

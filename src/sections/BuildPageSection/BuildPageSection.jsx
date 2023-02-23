@@ -6,8 +6,8 @@ import ShareModal from '@/components/ShareModal';
 import { useCallback, useState } from 'react';
 import NoItemPlaceholder from '@/components/NoItemPlaceholder';
 import HeadingHash from '@/components/HeadingHash';
-import { useUserTrackerContext } from 'src/context/UserTrackerProvider';
-import { user_activities } from 'server/activities';
+import { useUserTrackerContext } from '@/context/UserTrackerProvider';
+import { user_activities } from '../../../server/activities';
 
 function BuildPageSection({ name, overview, items, href }) {
   const { hackathonsRead, favHackathons, updateFavHackathons, updateReadHackathons } = useUserTrackerContext();

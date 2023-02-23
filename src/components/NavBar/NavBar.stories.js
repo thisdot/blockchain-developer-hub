@@ -1,4 +1,6 @@
+import SolanaWalletProvider from '@/context/SolanaWalletProvider';
 import NavBar from './NavBar';
+import { DataProvider } from '@/context/DataProvider';
 
 export default {
   title: 'component/Nav Bar',
@@ -8,6 +10,12 @@ export default {
   },
 };
 
-const Template = (args) => <NavBar {...args} />;
+const Template = (args) => (
+  <SolanaWalletProvider>
+    <DataProvider>
+      <NavBar {...args} />
+    </DataProvider>
+  </SolanaWalletProvider>
+);
 
 export const Default = Template.bind({});
