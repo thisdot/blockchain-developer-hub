@@ -6,6 +6,7 @@ import DefaultLayout from '@/layouts/DefaultLayout';
 import useGoogleTagManager from '@/hooks/useGoogleTagManager';
 import SolanaWalletProvider from 'src/context/SolanaWalletProvider';
 import { DataProvider } from 'src/context/DataProvider';
+import { UserTrackerProvider } from 'src/context/UserTrackerProvider';
 
 function MyApp({ Component, pageProps }) {
   useGoogleTagManager(process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING);
@@ -13,10 +14,12 @@ function MyApp({ Component, pageProps }) {
   return (
     <SolanaWalletProvider>
       <DataProvider>
-        <DefaultLayout>
-          <DefaultSeo {...SEO} />
-          <Component {...pageProps} />
-        </DefaultLayout>
+        <UserTrackerProvider>
+          <DefaultLayout>
+            <DefaultSeo {...SEO} />
+            <Component {...pageProps} />
+          </DefaultLayout>
+        </UserTrackerProvider>
       </DataProvider>
     </SolanaWalletProvider>
   );

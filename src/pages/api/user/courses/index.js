@@ -10,11 +10,10 @@ export default async function (req, res) {
   let status = 400;
   let resp = {};
   if (req.method === 'POST') {
-    //target is either read or favourites else get both read and favourites
+    //target is either read or favourites else get both read and favourites 63ef62ee92963a9a25c29f7d
     const { userid, target } = JSON.parse(req.body);
     if (userid && target) {
-      const user = await dbUSERS.findOne({ userID: userid }, { _id: 1 });
-
+      const user = await dbUSERS.findOne({ _id: ObjectId(userid) }, { _id: 1 });
       if (user) {
         const courses = await dbUSERCOURSES.findOne({ userID: ObjectId(user._id) }, { favourites: 1, read: 1, _id: 0 });
         if (courses) {
@@ -35,9 +34,13 @@ export default async function (req, res) {
             data,
           };
         } else {
-          status = 204;
+          status = 200;
           resp = {
             message: 'Nothing here',
+            data: {
+              read: [],
+              favourite: [],
+            },
           };
         }
       } else {

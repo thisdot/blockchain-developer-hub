@@ -17,6 +17,6 @@ const USERTUTORIALS = new Schema({
   },
 });
 
-const dbUSERTUTORIALS = mongoose.model('usertutorials', USERTUTORIALS);
+const dbUSERTUTORIALS = mongoose.models.usertutorials || mongoose.model('usertutorials', USERTUTORIALS);
 
 module.exports = dbUSERTUTORIALS;
