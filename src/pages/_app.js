@@ -4,8 +4,8 @@ import SEO from '../next-seo.config';
 import PropTypes from 'prop-types';
 import DefaultLayout from '@/layouts/DefaultLayout';
 import useGoogleTagManager from '@/hooks/useGoogleTagManager';
-import SolanaWalletProvider from 'src/context/SolanaWalletProvider';
-import { DataProvider } from 'src/context/DataProvider';
+import SolanaWalletProvider from '@/context/SolanaWalletProvider';
+import { DataProvider } from '@/context/DataProvider';
 import { UserTrackerProvider } from 'src/context/UserTrackerProvider';
 
 function MyApp({ Component, pageProps }) {

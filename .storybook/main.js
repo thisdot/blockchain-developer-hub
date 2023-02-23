@@ -49,6 +49,7 @@ module.exports = {
       '@/hooks': path.resolve(__dirname, '../src/hooks'),
       '@/context': path.resolve(__dirname, '../src/context'),
       '@/icons': path.resolve(__dirname, '../public/icons'),
+      '@/context': path.resolve(__dirname, '../src/context'),
       '/icons': path.resolve(__dirname, '../public/icons'),
       '/images': path.resolve(__dirname, '../public/images'),
       '/logos': path.resolve(__dirname, '../public/logos'),
