@@ -4,6 +4,9 @@ import clsx from 'clsx';
 import Svg from '@/components/Svg';
 import dayjs from 'dayjs';
 import ShareIcon from '@/icons/share.svg';
+import StarOutline from '@/icons/star-outline.svg';
+import Star from '@/icons/star.svg';
+import { useDataContext } from 'src/context/DataProvider';
 
 function Card({
   variant = 'gray',
@@ -25,7 +28,8 @@ function Card({
   read,
   favourite,
 }) {
-  const classes = clsx(styles.container, { [styles.light]: variant === 'light' });
+  const { userId } = useDataContext();
+  const classes = clsx(styles.container, { [styles.light]: variant === 'light', [styles.status_fav]: favourite });
   const levelText = level ? level.toLowerCase() : '';
   const titleClasses = clsx('text-lg--short-semi', styles.title);
   const subTitleClasses = clsx('caption--semi-bold', styles.subtitle);
@@ -36,10 +40,14 @@ function Card({
   const hasDate = end_date && start_date;
   const showFooter = online || location || on_demand || hasDate;
   const itsExternalLink = href.startsWith('https://') || href.startsWith('http://') ? true : false;
-  console.log(onFavourite); //To be implemented when icon added
 
   return (
-    <a href={href} target={itsExternalLink ? '_blank' : null} rel="noopener noreferrer" onClick={() => onRead(title)}>
+    <a
+      href={href}
+      target={itsExternalLink ? '_blank' : null}
+      rel="noopener noreferrer"
+      onClick={() => userId && onRead(title)}
+    >
       <div className={classes}>
         {image && (
           <div className={styles.header}>
@@ -48,23 +56,45 @@ function Card({
         )}
         <div className={styles.contents}>
           <div>
+            <div className={styles.actions}>
+              <div className={styles.action_left}>
+                {favourite !== undefined && userId && (
+                  <button
+                    className={styles.fav_btn}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      e.preventDefault();
+                      onFavourite({ title, action: favourite ? 0 : 1 });
+                    }}
+                  >
+                    {favourite ? <Star /> : <StarOutline />}
+                  </button>
+                )}
+                {onShare && (
+                  <button
+                    className={styles.shareBtn}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      onShare();
+                    }}
+                  >
+                    <ShareIcon />
+                  </button>
+                )}
+              </div>
+              {userId && (
+                <div
+                  className={clsx('caption--semi-bold', styles.status, {
+                    [styles.status_seen]: read,
+                  })}
+                >
+                  {read ? 'Seen' : null}
+                </div>
+              )}
+            </div>
             {subtitle && <span className={subTitleClasses}>{subtitle}</span>}
             <h3 className={titleClasses}>
-              <span>
-                {title} {read !== undefined && ' - read: ' + read}
-                {favourite !== undefined && ' - fav: ' + favourite}
-              </span>
-              {onShare && (
-                <button
-                  className={styles.shareBtn}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    onShare();
-                  }}
-                >
-                  <ShareIcon />
-                </button>
-              )}
+              <span>{title}</span>
             </h3>
 
             {description && <p className={descriptionClasses}>{description}</p>}

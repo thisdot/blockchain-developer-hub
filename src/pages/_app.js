@@ -6,7 +6,7 @@ import DefaultLayout from '@/layouts/DefaultLayout';
 import useGoogleTagManager from '@/hooks/useGoogleTagManager';
 import SolanaWalletProvider from '@/context/SolanaWalletProvider';
 import { DataProvider } from '@/context/DataProvider';
-import { UserTrackerProvider } from 'src/context/UserTrackerProvider';
+import { UserTrackerProvider } from '@/context/UserTrackerProvider';
 
 function MyApp({ Component, pageProps }) {
   useGoogleTagManager(process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING);
