@@ -9,7 +9,7 @@ import { useDataContext } from '@/context/DataProvider';
 
 const WalletBtn = () => {
   const { publicKey, wallet, disconnect } = useWallet();
-  const { authenticating } = useDataContext();
+  const { authenticating, userId } = useDataContext();
   const { setVisible } = useWalletModal();
   const [active, setActive] = useState(false);
   const ref = useRef(null);
@@ -63,7 +63,7 @@ const WalletBtn = () => {
     };
   }, [ref, closeDropdown]);
 
-  if (!wallet) {
+  if (!wallet || (!userId && !authenticating)) {
     return (
       <div className={clsx(styles.dropdown_wrapper)}>
         <WalletModalBtn className={clsx('btn-sm--extra-bold', styles.btn_connect)} />

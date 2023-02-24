@@ -8,6 +8,12 @@ export default {
       control: 'select',
       options: ['light', 'none'],
     },
+    read: {
+      control: 'boolean',
+    },
+    favourite: {
+      control: 'boolean',
+    },
   },
 };
 
@@ -23,6 +29,8 @@ Hackathon.args = {
   online: true,
   prize: '$1,000,000',
   href: 'https://www.google.com',
+  read: true,
+  favourite: true,
 };
 
 export const Workshop = Template.bind({});
@@ -46,6 +54,8 @@ Course.args = {
   subtitle: 'Patrick Collins',
   level: 'Intermediate',
   href: 'https://www.google.com',
+  read: true,
+  favourite: true,
 };
 
 export const HomeCourse = Template.bind({});

@@ -39,7 +39,7 @@ export default async function (req, res) {
             message: 'Nothing here',
             data: {
               read: [],
-              favourite: [],
+              favourites: [],
             },
           };
         }
