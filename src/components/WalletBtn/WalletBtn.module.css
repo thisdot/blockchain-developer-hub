@@ -58,4 +58,8 @@
     height: 40px;
     padding-inline: 1rem;
   }
+
+  .dropdown_wrapper {
+    flex: 0;
+  }
 }

@@ -29,7 +29,7 @@ function Card({
   favourite,
 }) {
   const { userId } = useDataContext();
-  const classes = clsx(styles.container, { [styles.light]: variant === 'light' });
+  const classes = clsx(styles.container, { [styles.light]: variant === 'light', [styles.status_fav]: favourite });
   const levelText = level ? level.toLowerCase() : '';
   const titleClasses = clsx('text-lg--short-semi', styles.title);
   const subTitleClasses = clsx('caption--semi-bold', styles.subtitle);

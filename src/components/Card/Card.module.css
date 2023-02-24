@@ -57,6 +57,10 @@
   cursor: pointer;
 }
 
+.status_fav, .status_fav:hover {
+  background-color: var(--dark-green-800);
+}
+
 .status {
   height: 24px;
   display: flex;
