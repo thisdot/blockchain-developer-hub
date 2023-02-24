@@ -47,8 +47,9 @@
 
 .dropdown_wrapper {
   flex: 1;
-  display: flex!important;
+  display: flex;
   justify-content: flex-end;
+  position: relative;
 }
 
 @media (min-width: 1024px) {

@@ -80,7 +80,7 @@ const WalletBtn = () => {
   }
 
   return (
-    <div className={clsx('wallet-adapter-dropdown', styles.dropdown_wrapper)}>
+    <div className={styles.dropdown_wrapper}>
       <button
         title={wallet ? wallet.adapter.name : 'disconnected'}
         className={clsx('btn-sm--extra-bold', styles.wallet_btn_dropdown)}

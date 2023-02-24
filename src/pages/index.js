@@ -11,7 +11,6 @@ import styles from '@/styles/pages/HomePage.module.css';
 import HomepageNewsLetter from '@/sections/HomepageNewsLetter';
 import HomePageConnectWalletStories from '@/sections/HomePageConnectWallet';
 
-
 export default function Home({ internal_case_studies }) {
   return (
     <div className={styles.container}>
