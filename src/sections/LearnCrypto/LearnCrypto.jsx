@@ -6,7 +6,7 @@ import ShareModal from '@/components/ShareModal';
 import { useCallback, useState } from 'react';
 import NoItemPlaceholder from '@/components/NoItemPlaceholder';
 import HeadingHash from '@/components/HeadingHash';
-import { useUserTrackerContext } from 'src/context/UserTrackerProvider';
+import { useUserTrackerContext } from '@/context/UserTrackerProvider';
 
 function LearnCrypto({ id, name, logo, logoAlt, courses, tutorials }) {
   const {

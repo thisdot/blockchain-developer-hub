@@ -18,7 +18,7 @@ const connectToDatabase = async () => {
     console.log('Cached MongoDB Connected successfully');
     return cached.conn;
   }
-  // mongoose.set('strictQuery', true);
+  mongoose.set('strictQuery', true);
 
   // Connect to MongoDB
   if (!cached.promise) {

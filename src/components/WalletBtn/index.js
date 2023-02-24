@@ -5,7 +5,7 @@ import styles from './WalletBtn.module.css';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
-import { useDataContext } from 'src/context/DataProvider';
+import { useDataContext } from '@/context/DataProvider';
 
 const WalletBtn = () => {
   const { publicKey, wallet, disconnect } = useWallet();
@@ -22,8 +22,15 @@ const WalletBtn = () => {
   );
 
   const base58 = useMemo(() => publicKey?.toBase58(), [publicKey]);
+  const content = useMemo(() => {
+    if (!wallet || !base58) return null;
+    return base58.slice(0, 4) + '..' + base58.slice(-4);
+  }, [wallet, base58]);
 
-  const changeWallet = () => setVisible(true);
+  const changeWallet = () => {
+    setVisible(true);
+    setActive(false);
+  };
 
   const openDropdown = useCallback(() => {
     setActive(!active);
@@ -56,47 +63,52 @@ const WalletBtn = () => {
     };
   }, [ref, closeDropdown]);
 
+  if (!wallet) {
+    return (
+      <div className={clsx(styles.dropdown_wrapper)}>
+        <WalletModalBtn className={clsx('btn-sm--extra-bold', styles.btn_connect)} />
+      </div>
+    );
+  }
+
+  if (!base58 && isWalletInstalled()) {
+    return (
+      <div className={clsx(styles.dropdown_wrapper)}>
+        <WalletConnectBtn className={clsx('btn-sm--extra-bold', styles.btn_connect)} />
+      </div>
+    );
+  }
+
   return (
-    <div
-      className="wallet-adapter-dropdown"
-      style={{ position: 'fixed', right: '20px', bottom: '20px', zIndex: '999999' }}
-    >
+    <div className={styles.dropdown_wrapper}>
       <button
         title={wallet ? wallet.adapter.name : 'disconnected'}
-        style={{ color: 'white' }}
-        onClick={openDropdown}
-        className={clsx(styles.wallet_btn_dropdown, {
-          [styles.wallet_btn_dropdown_disconnected]: !isWalletInstalled(),
-          [styles.wallet_btn_dropdown_connecting]: authenticating,
-        })}
+        className={clsx('btn-sm--extra-bold', styles.wallet_btn_dropdown)}
         disabled={authenticating}
       >
         {authenticating ? (
-          <small>...</small>
-        ) : (
-          <img
-            src={isWalletInstalled() ? wallet.adapter.icon : '/icons/disconnected.svg'}
-            alt={`${isWalletInstalled() ? wallet.adapter.name : 'disconnected'}` + 'image'}
-          />
-        )}
+          <small style={{ flex: 1 }}>Connecting...</small>
+        ) : isWalletInstalled() ? (
+          <>
+            {content && <small>{content}</small>}
+            <div onClick={openDropdown} className={styles.dropdown_icons}>
+              <img src={wallet.adapter.icon} alt={wallet.adapter.name + 'image'} className={styles.avatar} />
+              <img src={'/icons/dropdown.svg'} alt={'dropdown image'} />
+            </div>
+          </>
+        ) : null}
       </button>
       <ul aria-label="dropdown-list" className={dropdownListClasses} ref={ref} role="menu">
-        {!wallet && (
-          <WalletModalBtn className={clsx(styles.btn_connect, 'wallet-adapter-dropdown-list-item')} role="menuitem" />
-        )}
-        {!base58 && isWalletInstalled() && (
-          <WalletConnectBtn className={clsx(styles.btn_connect, 'wallet-adapter-dropdown-list-item')} role="menuitem" />
-        )}
-        {wallet && base58 && (
-          <>
-            <li onClick={changeWallet} className="wallet-adapter-dropdown-list-item" role="menuitem">
-              Change wallet
-            </li>
-            <li onClick={disconnect} className="wallet-adapter-dropdown-list-item" role="menuitem">
-              Disconnect
-            </li>
-          </>
-        )}
+        <li onClick={changeWallet} className="wallet-adapter-dropdown-list-item" role="menuitem">
+          Change wallet
+        </li>
+        <li
+          onClick={() => [disconnect(), closeDropdown()]}
+          className="wallet-adapter-dropdown-list-item"
+          role="menuitem"
+        >
+          Disconnect
+        </li>
       </ul>
     </div>
   );

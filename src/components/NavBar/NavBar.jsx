@@ -10,6 +10,7 @@ import navbarLinks from '@/data/navbarLinks.yaml';
 
 import GithubLogo from '@/icons/github.svg';
 import Logo from '@/icons/logo.svg';
+import WalletBtn from '../WalletBtn';
 
 const links = navbarLinks.items;
 
@@ -58,16 +59,19 @@ export default function NavBar({ isSticky }) {
                 <NavLink text={res.name} to={res.href} type="link" active={isActive(pathname, res.href)} />
               </li>
             ))}
+            <span className={styles.githublogo_mobile}>
+              <a
+                href="https://github.com/smartcontractkit/blockchain-developer-hub"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.githublogo}
+              >
+                <span className="btn-sm--extra-bold">Contribute</span>
+                <GithubLogo />
+              </a>
+            </span>
           </ul>
-          <a
-            href="https://github.com/smartcontractkit/blockchain-developer-hub"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.githublogo}
-          >
-            <span className="btn-sm--extra-bold">Contribute</span>
-            <GithubLogo />
-          </a>
+          <WalletBtn />
         </div>
       </div>
     </nav>
