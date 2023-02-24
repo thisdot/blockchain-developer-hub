@@ -25,6 +25,9 @@ function BuildPageSection({ name, overview, items, href }) {
   );
   const checkFavHackathon = useCallback(
     (title) => {
+      console.log('====================================');
+      console.log(favHackathons);
+      console.log('====================================');
       const resp = favHackathons && favHackathons.find((res) => res.title === title);
       return resp ? true : false;
     },

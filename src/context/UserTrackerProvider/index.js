@@ -1,6 +1,9 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useDataContext } from '../DataProvider';
+import useCourses from './useCourses';
+import useTutorials from './useTutorials';
+import useHackathons from './useHackathons';
 
 const UserTrackerContext = createContext({
   coursesRead: [],
@@ -19,129 +22,11 @@ const UserTrackerContext = createContext({
 
 export const UserTrackerProvider = ({ children }) => {
   const { userId } = useDataContext();
-  const [coursesRead, setCoursesRead] = useState([]);
-  const [favCourses, setFavCourses] = useState([]);
-  const [tutorialsRead, setTutorialsRead] = useState([]);
-  const [favTutorials, setFavTutorials] = useState([]);
-  const [hackathonsRead, setHackathonsRead] = useState([]);
-  const [favHackathons, setFavHackathons] = useState([]);
+  const [coursesRead, favCourses, getCourses, updateFavCourses, updateReadCourses] = useCourses(userId);
+  const [tutorialsRead, favTutorials, getTutorials, updateFavTutorials, updateReadTutorials] = useTutorials(userId);
 
-  const getCourses = async () => {
-    const resp = await fetch('/api/user/courses', {
-      method: 'POST',
-      body: JSON.stringify({ userid: userId, target: 'all' }),
-    });
-    if (resp.status === 200) {
-      const { data } = await resp.json();
-      const { read, favourites } = data;
-      setCoursesRead(read);
-      setFavCourses(favourites);
-    }
-  };
-
-  const updateFavCourses = async ({ title, action }) => {
-    const resp = await fetch('/api/user/courses/favourite', {
-      method: 'POST',
-      body: JSON.stringify({ userid: userId, title, action }),
-    });
-
-    if (resp.status === 200) {
-      if (action === 0) {
-        setFavCourses((prev) => prev.filter((res) => res.title !== title));
-      } else {
-        setFavCourses([...favCourses, { title }]);
-      }
-    }
-  };
-
-  const updateReadCourses = async ({ title }) => {
-    const resp = await fetch('/api/user/courses/read', {
-      method: 'POST',
-      body: JSON.stringify({ userid: userId, title }),
-    });
-
-    if (resp.status === 200) {
-      setCoursesRead([...coursesRead, { title }]);
-    }
-  };
-
-  const getTutorials = async () => {
-    const resp = await fetch('/api/user/tutorials', {
-      method: 'POST',
-      body: JSON.stringify({ userid: userId, target: 'all' }),
-    });
-    if (resp.status === 200) {
-      const { data } = await resp.json();
-      const { read, favourites } = data;
-      setTutorialsRead(read);
-      setFavTutorials(favourites);
-    }
-  };
-
-  const updateFavTutorials = async ({ title, action }) => {
-    const resp = await fetch('/api/user/tutorials/favourite', {
-      method: 'POST',
-      body: JSON.stringify({ userid: userId, title, action }),
-    });
-
-    if (resp.status === 200) {
-      if (action === 0) {
-        setFavTutorials((prev) => prev.filter((res) => res.title !== title));
-      } else {
-        setFavTutorials([...favCourses, { title }]);
-      }
-    }
-  };
-
-  const updateReadTutorials = async ({ title }) => {
-    const resp = await fetch('/api/user/tutorials/read', {
-      method: 'POST',
-      body: JSON.stringify({ userid: userId, title }),
-    });
-
-    if (resp.status === 200) {
-      setTutorialsRead([...tutorialsRead, { title }]);
-    }
-  };
-
-  const getHackathons = async () => {
-    const resp = await fetch('/api/user/tutorials', {
-      method: 'POST',
-      body: JSON.stringify({ userid: userId, target: 'all' }),
-    });
-    if (resp.status === 200) {
-      const { data } = await resp.json();
-      const { read, favourites } = data;
-      setHackathonsRead(read);
-      setFavHackathons(favourites);
-    }
-  };
-
-  const updateFavHackathons = async ({ title, action }) => {
-    const resp = await fetch('/api/user/hackathons/favourite', {
-      method: 'POST',
-      body: JSON.stringify({ userid: userId, title, action }),
-    });
-
-    if (resp.status === 200) {
-      if (action === 0) {
-        setFavHackathons((prev) => prev.filter((res) => res.title !== title));
-      } else {
-        setFavHackathons([...favCourses, { title }]);
-      }
-    }
-  };
-
-  const updateReadHackathons = async ({ title }) => {
-    const resp = await fetch('/api/user/hackathons/read', {
-      method: 'POST',
-      body: JSON.stringify({ userid: userId, title }),
-    });
-
-    if (resp.status === 200) {
-      setHackathonsRead([...hackathonsRead, { title }]);
-    }
-  };
+  const [hackathonsRead, favHackathons, getHackathons, updateFavHackathons, updateReadHackathons] =
+    useHackathons(userId);
 
   useEffect(() => {
     if (userId) {
