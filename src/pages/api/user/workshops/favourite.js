@@ -19,7 +19,7 @@ export default async function (req, res) {
   if (req.method === 'POST') {
     const { userid, title, action } = JSON.parse(req.body);
 
-    if (userid && title && action) {
+    if (userid && title && action !== undefined) {
       const user = await dbUSERS.findOne({ _id: ObjectId(userid) }, { _id: 1 });
       if (user) {
         const workshops = await dbUSERWORKSHOPS.findOne({ userID: ObjectId(user._id) }, { favourites: 1, _id: 1 });

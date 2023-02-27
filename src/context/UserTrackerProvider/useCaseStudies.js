@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 export default function useCaseStudies(userId) {
-  const [case_studiesRead, setCaseStudiesRead] = useState([]);
+  const [caseStudiesRead, setCaseStudiesRead] = useState([]);
   const [favCaseStudies, setFavCaseStudies] = useState([]);
 
   const getCaseStudies = async () => {
@@ -67,7 +67,7 @@ export default function useCaseStudies(userId) {
 
     if (resp.status === 200) {
       setCaseStudiesRead([
-        ...case_studiesRead,
+        ...caseStudiesRead,
         {
           title,
         },
@@ -75,5 +75,5 @@ export default function useCaseStudies(userId) {
     }
   };
 
-  return [case_studiesRead, favCaseStudies, getCaseStudies, updateFavCaseStudies, updateReadCaseStudies];
+  return [caseStudiesRead, favCaseStudies, getCaseStudies, updateFavCaseStudies, updateReadCaseStudies];
 }

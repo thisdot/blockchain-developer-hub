@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { useDataContext } from '../DataProvider';
 import useCourses from './useCourses';
 import useTutorials from './useTutorials';
-import useHackathons from './useHackathons';
+import useWorkshops from './useWorkshops';
+import useCaseStudies from './useCaseStudies';
 
 const UserTrackerContext = createContext({
   coursesRead: [],
@@ -12,27 +13,34 @@ const UserTrackerContext = createContext({
   favTutorials: [],
   hackathonsRead: [],
   favHackathons: [],
+  workshopsRead: [],
+  favWorkshops: [],
+  caseStudiesRead: [],
+  favCaseStudies: [],
   updateFavCourses: () => {},
   updateReadCourses: () => {},
   updateFavTutorials: () => {},
   updateReadTutorials: () => {},
-  updateFavHackathons: () => {},
-  updateReadHackathons: () => {},
+  updateFavWorkshops: () => {},
+  updateReadWorkshops: () => {},
+  updateFavCaseStudies: () => {},
+  updateReadCaseStudies: () => {},
 });
 
 export const UserTrackerProvider = ({ children }) => {
   const { userId } = useDataContext();
   const [coursesRead, favCourses, getCourses, updateFavCourses, updateReadCourses] = useCourses(userId);
   const [tutorialsRead, favTutorials, getTutorials, updateFavTutorials, updateReadTutorials] = useTutorials(userId);
-
-  const [hackathonsRead, favHackathons, getHackathons, updateFavHackathons, updateReadHackathons] =
-    useHackathons(userId);
+  const [workshopsRead, favWorkshops, getWorkshops, updateFavWorkshops, updateReadWorkshops] = useWorkshops(userId);
+  const [caseStudiesRead, favCaseStudies, getCaseStudies, updateFavCaseStudies, updateReadCaseStudies] =
+    useCaseStudies(userId);
 
   useEffect(() => {
     if (userId) {
       getCourses();
       getTutorials();
-      getHackathons();
+      getWorkshops();
+      getCaseStudies();
     }
   }, [userId]);
 
@@ -43,14 +51,18 @@ export const UserTrackerProvider = ({ children }) => {
         favCourses,
         tutorialsRead,
         favTutorials,
-        hackathonsRead,
-        favHackathons,
+        workshopsRead,
+        favWorkshops,
+        caseStudiesRead,
+        favCaseStudies,
         updateFavCourses,
         updateReadCourses,
         updateFavTutorials,
         updateReadTutorials,
-        updateFavHackathons,
-        updateReadHackathons,
+        updateFavWorkshops,
+        updateReadWorkshops,
+        updateFavCaseStudies,
+        updateReadCaseStudies,
       }}
     >
       {children}
