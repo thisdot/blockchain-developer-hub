@@ -55,7 +55,7 @@ export default async function (req, res) {
               };
             } else {
               resp = {
-                message: 'Failed to remove favourite course',
+                message: 'Failed to remove favourite tutorial',
               };
             }
           } else if (!matchesTitle && action === 1) {

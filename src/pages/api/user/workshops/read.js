@@ -60,12 +60,12 @@ export default async function (req, res) {
               };
             } else {
               resp = {
-                message: 'Failed to track hackathon',
+                message: 'Failed to track workshop',
               };
             }
           }
         } else {
-          //Initiate hackathon in case either read or favourites are all empty
+          //Initiate workshop in case either read or favourites are all empty
           const result = await new dbUSERWORKSHOPS({
             userID: ObjectId(user._id),
             read: [
@@ -82,7 +82,7 @@ export default async function (req, res) {
             };
           } else {
             resp = {
-              message: 'Failed to track hackathon',
+              message: 'Failed to track workshop',
             };
           }
         }

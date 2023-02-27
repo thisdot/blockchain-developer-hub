@@ -65,7 +65,7 @@ export default async function (req, res) {
             }
           }
         } else {
-          //Initiate hackathon in case either read or favourites are all empty
+          //Initiate case study in case either read or favourites are all empty
           const result = await new dbUSERCASESTUDIES({
             userID: ObjectId(user._id),
             read: [
@@ -82,7 +82,7 @@ export default async function (req, res) {
             };
           } else {
             resp = {
-              message: 'Failed to track hackathon',
+              message: 'Failed to track case study',
             };
           }
         }
