@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import connectToDatabase from 'server/db-config';
 import dbUSERS from 'server/models/users';
-import dbUSERTUTORIALS from 'server/models/users/tutorials';
+import dbUSERWORKSHOPS from 'server/models/users/workshops';
 const ObjectId = mongoose.Types.ObjectId;
 
 /**
@@ -22,9 +22,9 @@ export default async function (req, res) {
     if (userid && title && action !== undefined) {
       const user = await dbUSERS.findOne({ _id: ObjectId(userid) }, { _id: 1 });
       if (user) {
-        const tutorials = await dbUSERTUTORIALS.findOne({ userID: ObjectId(user._id) }, { favourites: 1, _id: 1 });
-        if (tutorials) {
-          const matchesTitle = await dbUSERTUTORIALS.findOne(
+        const workshops = await dbUSERWORKSHOPS.findOne({ userID: ObjectId(user._id) }, { favourites: 1, _id: 1 });
+        if (workshops) {
+          const matchesTitle = await dbUSERWORKSHOPS.findOne(
             {
               userID: ObjectId(user._id),
               favourites: { $elemMatch: { title: title } },
@@ -42,7 +42,7 @@ export default async function (req, res) {
             };
           } else if (matchesTitle && action === 0) {
             // Remove as favourite
-            const result = await tutorials.updateOne({
+            const result = await workshops.updateOne({
               $pull: {
                 favourites: { title },
               },
@@ -55,12 +55,12 @@ export default async function (req, res) {
               };
             } else {
               resp = {
-                message: 'Failed to remove favourite tutorial',
+                message: 'Failed to remove favourite workshop',
               };
             }
           } else if (!matchesTitle && action === 1) {
             //add title if title does exist
-            const result = await tutorials.updateOne({
+            const result = await workshops.updateOne({
               $push: {
                 favourites: { title },
               },
@@ -72,18 +72,18 @@ export default async function (req, res) {
               };
             } else {
               resp = {
-                message: 'Failed to add favourite tutorial',
+                message: 'Failed to add favourite workshop',
               };
             }
           } else {
             status = 404;
             resp = {
-              message: 'Seems you are trying to remove a tutorial that does not exist',
+              message: 'Seems you are trying to remove a workshop that does not exist',
             };
           }
         } else {
-          //Initiate tutorial in case either read or favourites are all empty
-          const result = await new dbUSERTUTORIALS({
+          //Initiate workshop in case either read or favourites are all empty
+          const result = await new dbUSERWORKSHOPS({
             userID: ObjectId(user._id),
             favourites: [{ title }],
           });
@@ -95,7 +95,7 @@ export default async function (req, res) {
             };
           } else {
             resp = {
-              message: 'Failed to add favourite tutorial',
+              message: 'Failed to add favourite workshop',
             };
           }
         }
