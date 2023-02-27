@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import ShareIcon from '@/icons/share.svg';
 import StarOutline from '@/icons/star-outline.svg';
 import Star from '@/icons/star.svg';
-import { useDataContext } from 'src/context/DataProvider';
+import { useDataContext } from '@/context/DataProvider';
 
 function Card({
   variant = 'gray',
