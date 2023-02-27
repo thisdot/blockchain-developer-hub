@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import connectToDatabase from 'server/db-config';
 import dbUSERS from 'server/models/users';
-import dbUSERHACKATHONS from 'server/models/users/hackathons';
+import dbUSERCASESTUDIES from 'server/models/users/case-studies';
 const ObjectId = mongoose.Types.ObjectId;
 
 /**
@@ -22,9 +22,9 @@ export default async function (req, res) {
     if (userid && title && action !== undefined) {
       const user = await dbUSERS.findOne({ _id: ObjectId(userid) }, { _id: 1 });
       if (user) {
-        const hackathons = await dbUSERHACKATHONS.findOne({ userID: ObjectId(user._id) }, { favourites: 1, _id: 1 });
-        if (hackathons) {
-          const matchesTitle = await dbUSERHACKATHONS.findOne(
+        const case_studies = await dbUSERCASESTUDIES.findOne({ userID: ObjectId(user._id) }, { favourites: 1, _id: 1 });
+        if (case_studies) {
+          const matchesTitle = await dbUSERCASESTUDIES.findOne(
             {
               userID: ObjectId(user._id),
               favourites: { $elemMatch: { title: title } },
@@ -42,7 +42,7 @@ export default async function (req, res) {
             };
           } else if (matchesTitle && action === 0) {
             // Remove as favourite
-            const result = await hackathons.updateOne({
+            const result = await case_studies.updateOne({
               $pull: {
                 favourites: { title },
               },
@@ -55,12 +55,12 @@ export default async function (req, res) {
               };
             } else {
               resp = {
-                message: 'Failed to remove favourite course',
+                message: 'Failed to remove favourite case study',
               };
             }
           } else if (!matchesTitle && action === 1) {
             //add title if title does exist
-            const result = await hackathons.updateOne({
+            const result = await case_studies.updateOne({
               $push: {
                 favourites: { title },
               },
@@ -72,18 +72,18 @@ export default async function (req, res) {
               };
             } else {
               resp = {
-                message: 'Failed to add favourite tutorial',
+                message: 'Failed to add favourite case study',
               };
             }
           } else {
             status = 404;
             resp = {
-              message: 'Seems you are trying to remove a tutorial that does not exist',
+              message: 'Seems you are trying to remove a case study that does not exist',
             };
           }
         } else {
-          //Initiate tutorial in case either read or favourites are all empty
-          const result = await new dbUSERHACKATHONS({
+          //Initiate case study in case either read or favourites are all empty
+          const result = await new dbUSERCASESTUDIES({
             userID: ObjectId(user._id),
             favourites: [{ title }],
           });
@@ -95,7 +95,7 @@ export default async function (req, res) {
             };
           } else {
             resp = {
-              message: 'Failed to add favourite tutorial',
+              message: 'Failed to add favourite case study',
             };
           }
         }

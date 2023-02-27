@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId;
 
-const USERHACKATHONS = new Schema({
+const USERWORKSHOPS = new Schema({
   userID: {
     type: ObjectId,
     required: true,
@@ -17,6 +17,6 @@ const USERHACKATHONS = new Schema({
   },
 });
 
-const dbUSERHACKATHONS = mongoose.models.userhackathons || mongoose.model('userhackathons', USERHACKATHONS);
+const dbUSERWORKSHOPS = mongoose.models.userworkshops || mongoose.model('userworkshops', USERWORKSHOPS);
 
-module.exports = dbUSERHACKATHONS;
+module.exports = dbUSERWORKSHOPS;

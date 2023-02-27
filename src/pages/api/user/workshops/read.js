@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import connectToDatabase from 'server/db-config';
 import dbUSERS from 'server/models/users';
-import dbUSERHACKATHONS from 'server/models/users/hackathons';
+import dbUSERWORKSHOPS from 'server/models/users/workshops';
 const ObjectId = mongoose.Types.ObjectId;
 
 export default async function (req, res) {
@@ -14,7 +14,7 @@ export default async function (req, res) {
     if (userid && title) {
       const user = await dbUSERS.findOne({ _id: ObjectId(userid) }, { _id: 1 });
       if (user) {
-        const hackathons = await dbUSERHACKATHONS.findOne(
+        const workshops = await dbUSERWORKSHOPS.findOne(
           {
             userID: ObjectId(user._id),
           },
@@ -24,8 +24,8 @@ export default async function (req, res) {
           }
         );
 
-        if (hackathons) {
-          const matchesTitle = await dbUSERHACKATHONS.findOne(
+        if (workshops) {
+          const matchesTitle = await dbUSERWORKSHOPS.findOne(
             {
               userID: ObjectId(user._id),
               read: {
@@ -46,7 +46,7 @@ export default async function (req, res) {
               message: 'Duplicate title found',
             };
           } else {
-            const result = await hackathons.updateOne({
+            const result = await workshops.updateOne({
               $push: {
                 read: {
                   title,
@@ -60,13 +60,13 @@ export default async function (req, res) {
               };
             } else {
               resp = {
-                message: 'Failed to track hackathon',
+                message: 'Failed to track workshop',
               };
             }
           }
         } else {
-          //Initiate hackathon in case either read or favourites are all empty
-          const result = await new dbUSERHACKATHONS({
+          //Initiate workshop in case either read or favourites are all empty
+          const result = await new dbUSERWORKSHOPS({
             userID: ObjectId(user._id),
             read: [
               {
@@ -82,7 +82,7 @@ export default async function (req, res) {
             };
           } else {
             resp = {
-              message: 'Failed to track hackathon',
+              message: 'Failed to track workshop',
             };
           }
         }

@@ -8,32 +8,68 @@ import NoItemPlaceholder from '@/components/NoItemPlaceholder';
 import HeadingHash from '@/components/HeadingHash';
 import { useUserTrackerContext } from '@/context/UserTrackerProvider';
 import { user_activities } from '../../../server/activities';
+import useCheckWorkshop from './useCheckWorkshop';
+import useCheckCaseStudy from './useCheckCaseStudy';
 
 function BuildPageSection({ name, overview, items, href }) {
-  const { hackathonsRead, favHackathons, updateFavHackathons, updateReadHackathons } = useUserTrackerContext();
+  const [checkReadWorkshop, checkFavWorkshop] = useCheckWorkshop();
+  const [checkReadCaseStudy, checkFavCaseStudy] = useCheckCaseStudy();
+  const {
+    workshopsRead,
+    caseStudiesRead,
+    favWorkshops,
+    favCaseStudies,
+    updateReadWorkshops,
+    updateFavWorkshops,
+    updateReadCaseStudies,
+    updateFavCaseStudies,
+  } = useUserTrackerContext();
   const headingClasses = clsx('subtitle-bold', styles.headings);
   const overviewClasses = clsx('text-md--long', styles.overview);
   const id = name.replace(/[" "]/g, '').toLowerCase();
   const [shareItem, setShareItem] = useState(null);
 
-  const checkReadHackathon = useCallback(
+  const checkRead = useCallback(
     (title) => {
-      const resp = hackathonsRead && hackathonsRead.find((res) => res.title === title);
-      return resp ? true : false;
+      if (user_activities.case_studies === name.toLowerCase()) {
+        return checkReadCaseStudy(title);
+      } else if (user_activities.workshops === name.toLowerCase()) {
+        return checkReadWorkshop(title);
+      }
     },
-    [hackathonsRead]
+    [workshopsRead, caseStudiesRead]
   );
-  const checkFavHackathon = useCallback(
+  const checkFavourite = useCallback(
     (title) => {
-      const resp = favHackathons && favHackathons.find((res) => res.title === title);
-      return resp ? true : false;
+      if (user_activities.case_studies === name.toLowerCase()) {
+        return checkFavCaseStudy(title);
+      } else if (user_activities.workshops === name.toLowerCase()) {
+        return checkFavWorkshop(title);
+      }
     },
-    [favHackathons]
+    [favWorkshops, favCaseStudies]
   );
 
-  const isHackathon = useCallback(() => {
-    return user_activities.hackathons === name.toLowerCase();
+  const updateRead = (data) => {
+    if (user_activities.case_studies === name.toLowerCase()) {
+      updateReadCaseStudies(data);
+    } else if (user_activities.workshops === name.toLowerCase()) {
+      updateReadWorkshops(data);
+    }
+  };
+  const updateFavourite = (data) => {
+    if (user_activities.case_studies === name.toLowerCase()) {
+      updateFavCaseStudies(data);
+    } else if (user_activities.workshops === name.toLowerCase()) {
+      updateFavWorkshops(data);
+    }
+  };
+
+  const isAllowActivity = useCallback(() => {
+    const alllowActivity = [user_activities.case_studies, user_activities.workshops];
+    return alllowActivity.includes(name.toLowerCase());
   }, [name]);
+
   return (
     <div className={styles.mainContent} id={id}>
       <h1 className={headingClasses}>
@@ -57,11 +93,11 @@ function BuildPageSection({ name, overview, items, href }) {
                 href={href}
                 image={image}
                 key={index}
-                favourite={isHackathon() ? checkFavHackathon(title) : undefined}
-                read={isHackathon() ? checkReadHackathon(title) : undefined}
-                onRead={(value) => (isHackathon() ? updateReadHackathons({ title: value }) : undefined)}
+                favourite={isAllowActivity() ? checkFavourite(title) : undefined}
+                read={isAllowActivity() ? checkRead(title) : undefined}
+                onRead={(value) => (isAllowActivity() ? updateRead({ title: value }) : undefined)}
                 onFavourite={({ title, action }) =>
-                  isHackathon() ? updateFavHackathons({ title, action }) : undefined
+                  isAllowActivity() ? updateFavourite({ title, action }) : undefined
                 }
                 onShare={() => setShareItem(href)}
               />

@@ -1,3 +1,4 @@
+import { DataProvider } from '@/context/DataProvider';
 import Card from './Card';
 
 export default {
@@ -17,7 +18,11 @@ export default {
   },
 };
 
-const Template = (args) => <Card {...args} />;
+const Template = (args) => (
+  <DataProvider>
+    <Card {...args} />
+  </DataProvider>
+);
 
 export const Hackathon = Template.bind({});
 
@@ -41,6 +46,8 @@ Workshop.args = {
   image: 'https://placekitten.com/200/150',
   date: 'Feb 3 - Mar 17, 2022',
   online: false,
+  read: true,
+  favourite: true,
   location: 'New York',
   href: 'https://www.google.com',
 };
