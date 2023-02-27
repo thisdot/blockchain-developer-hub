@@ -7,6 +7,8 @@ import { useCallback, useState } from 'react';
 import NoItemPlaceholder from '@/components/NoItemPlaceholder';
 import HeadingHash from '@/components/HeadingHash';
 import { useUserTrackerContext } from '@/context/UserTrackerProvider';
+import { useDataContext } from '@/context/DataProvider';
+import isRecentDate from '@/helpers/isRecentDate';
 
 function LearnCrypto({ id, name, logo, logoAlt, courses, tutorials }) {
   const {
@@ -19,6 +21,7 @@ function LearnCrypto({ id, name, logo, logoAlt, courses, tutorials }) {
     updateFavCourses,
     updateFavTutorials,
   } = useUserTrackerContext();
+  const { userId, lastLogin } = useDataContext();
   const headingClasses = clsx('subtitle-bold', styles.headings);
   const overviewClasses = clsx('text-md--long', styles.overview);
   const [shareItem, setShareItem] = useState(null);
@@ -52,6 +55,30 @@ function LearnCrypto({ id, name, logo, logoAlt, courses, tutorials }) {
     [favTutorials]
   );
 
+  const getCourses = useCallback(() => {
+    let courses_data = courses?.data.slice();
+    if (userId) {
+      const seenCourses = courses_data.filter(({ title }) => checkReadCourse(title));
+      const newCourses = courses_data.filter(({ date }) => date && isRecentDate(date, lastLogin));
+      const otherCourses = courses_data.filter(({ date, title }) => !date && checkReadCourse(title) === false);
+
+      courses_data = [...newCourses, ...otherCourses, ...seenCourses];
+    }
+    return courses_data;
+  }, [userId, lastLogin, coursesRead]);
+
+  const getTutorials = useCallback(() => {
+    let tutorials_data = tutorials?.data.slice();
+    if (userId) {
+      const seenTutorials = tutorials_data.filter(({ title }) => checkReadTutorial(title));
+      const newTutorials = tutorials_data.filter(({ date }) => date && isRecentDate(date, lastLogin));
+      const otherTutorials = tutorials_data.filter(({ date, title }) => !date && checkReadTutorial(title) === false);
+
+      tutorials_data = [...newTutorials, ...otherTutorials, ...seenTutorials];
+    }
+    return tutorials_data;
+  }, [userId, lastLogin, tutorialsRead]);
+
   return (
     <div id={id} className={styles.container}>
       <div className={styles.mainContent}>
@@ -66,9 +93,9 @@ function LearnCrypto({ id, name, logo, logoAlt, courses, tutorials }) {
               Courses
             </h3>
             {courses.overview && <p className={overviewClasses}>{courses.overview}</p>}
-            {courses.data ? (
+            {getCourses() ? (
               <div className={styles.cards}>
-                {courses.data.map(({ title, author, image, level, description, href }, index) => (
+                {getCourses().map(({ title, author, image, level, description, href }, index) => (
                   <Card
                     title={title}
                     subtitle={author}
@@ -98,9 +125,9 @@ function LearnCrypto({ id, name, logo, logoAlt, courses, tutorials }) {
               Tutorials
             </h3>
             {tutorials.overview && <p className={overviewClasses}>{tutorials.overview}</p>}
-            {tutorials.data ? (
+            {getTutorials() ? (
               <div className={styles.cards}>
-                {tutorials.data.map(({ title, author, description, href }, index) => (
+                {getTutorials().map(({ title, author, description, href }, index) => (
                   <Card
                     title={title}
                     subtitle={author}
