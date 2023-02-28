@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const COURSES = new Schema({
+const WORKSHOPS = new Schema({
   title: {
     type: String,
     required: true,
@@ -9,23 +9,24 @@ const COURSES = new Schema({
   },
   author: {
     type: String,
-    required: true,
-  },
-  image: {
-    type: String,
-    required: true,
-  },
-  level: {
-    type: String,
-    required: true,
   },
   href: {
     type: String,
     required: true,
   },
+  online: {
+    type: Boolean,
+    required: true,
+  },
   description: {
     type: String,
     required: true,
+  },
+  start_date: {
+    type: Date,
+  },
+  end_date: {
+    type: Date,
   },
   date: {
     type: Date,
@@ -33,6 +34,6 @@ const COURSES = new Schema({
   },
 });
 
-const dbCOURSES = mongoose.models.courses || mongoose.model('courses', COURSES);
+const dbWORKSHOPS = mongoose.models.workshops || mongoose.model('workshops', WORKSHOPS);
 
-module.exports = dbCOURSES;
+module.exports = dbWORKSHOPS;

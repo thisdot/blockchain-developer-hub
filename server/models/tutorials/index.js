@@ -1,21 +1,13 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const COURSES = new Schema({
+const TUTORIALS = new Schema({
   title: {
     type: String,
     required: true,
     unique: true,
   },
   author: {
-    type: String,
-    required: true,
-  },
-  image: {
-    type: String,
-    required: true,
-  },
-  level: {
     type: String,
     required: true,
   },
@@ -33,6 +25,6 @@ const COURSES = new Schema({
   },
 });
 
-const dbCOURSES = mongoose.models.courses || mongoose.model('courses', COURSES);
+const dbTUTORIALS = mongoose.models.tutorials || mongoose.model('tutorials', TUTORIALS);
 
-module.exports = dbCOURSES;
+module.exports = dbTUTORIALS;

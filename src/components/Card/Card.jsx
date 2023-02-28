@@ -26,6 +26,7 @@ function Card({
   onRead,
   onFavourite,
   read,
+  isNew,
   favourite,
 }) {
   const { userId } = useDataContext();
@@ -85,13 +86,14 @@ function Card({
                   </button>
                 )}
               </div>
-              {userId && (
+              {userId && (isNew || read) && (
                 <div
                   className={clsx('caption--semi-bold', styles.status, {
                     [styles.status_seen]: read,
+                    [styles.status_new]: isNew && !read,
                   })}
                 >
-                  {read ? 'Seen' : null}
+                  {read ? 'Seen' : 'New'}
                 </div>
               )}
             </div>
@@ -162,6 +164,7 @@ Card.propTypes = {
   onRead: PropTypes.func,
   onFavourite: PropTypes.func,
   read: PropTypes.bool,
+  isNew: PropTypes.bool,
   favourite: PropTypes.bool,
 };
 

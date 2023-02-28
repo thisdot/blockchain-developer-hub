@@ -44,6 +44,12 @@ const WalletBtn = () => {
     return wallet && wallet.readyState === 'Installed';
   }, [wallet]);
 
+  const logOut = () => {
+    disconnect();
+    closeDropdown();
+    sessionStorage.removeItem('last_log');
+  };
+
   useEffect(() => {
     const listener = (event) => {
       const node = ref.current;
@@ -102,11 +108,7 @@ const WalletBtn = () => {
         <li onClick={changeWallet} className="wallet-adapter-dropdown-list-item" role="menuitem">
           Change wallet
         </li>
-        <li
-          onClick={() => [disconnect(), closeDropdown()]}
-          className="wallet-adapter-dropdown-list-item"
-          role="menuitem"
-        >
+        <li onClick={logOut} className="wallet-adapter-dropdown-list-item" role="menuitem">
           Disconnect
         </li>
       </ul>
