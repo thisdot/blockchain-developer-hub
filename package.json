@@ -18,7 +18,7 @@
   "dependencies": {
     "@solana/wallet-adapter-base": "^0.9.20",
     "@solana/wallet-adapter-react": "^0.15.28",
-    "@solana/wallet-adapter-react-ui": "^0.9.27",
+    "@solana/wallet-adapter-react-ui": "^0.9.29",
     "@solana/wallet-adapter-wallets": "^0.19.11",
     "@solana/web3.js": "^1.73.2",
     "@storybook/addon-docs": "^6.5.0-beta.7",
