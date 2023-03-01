@@ -35,7 +35,7 @@ export default function useLearnContents(data) {
         });
         const status = resp.status;
         if (status === 200) {
-          // its a new course
+          // it's a new course
           setNewCourses([...newCourses, data]);
         }
       });
@@ -52,7 +52,7 @@ export default function useLearnContents(data) {
         });
         const status = resp.status;
         if (status === 200) {
-          // its a new tutorial
+          // it's a new tutorial
           setNewTutorials([...newTutorials, data]);
         }
       });
@@ -69,7 +69,7 @@ export default function useLearnContents(data) {
       });
       const status = resp.status;
       if (status === 200) {
-        // its a new workshop
+        // it's a new workshop
         setNewWorkshops([...newWorkshops, data]);
       }
     });
@@ -85,7 +85,7 @@ export default function useLearnContents(data) {
         });
         const status = resp.status;
         if (status === 200) {
-          // its a new case study
+          // it's a new case study
           setNewCaseStudies([...newCaseStudies, data]);
         }
       });

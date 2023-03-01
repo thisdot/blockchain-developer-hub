@@ -54,7 +54,7 @@ const WalletBtn = () => {
     const listener = (event) => {
       const node = ref.current;
 
-      // Do nothing if clicking dropdown or its descendants
+      // Do nothing if clicking dropdown or it's descendants
       if (!node || node.contains(event.target)) return;
 
       closeDropdown();

@@ -67,7 +67,7 @@ export default async function handler(req, res) {
         })
         .catch((error) => {
           console.log('Response Error', error);
-          res.status(500).send({ message: 'An error has occured, please try again', status: 500, ...error });
+          res.status(500).send({ message: 'An error has occurred, please try again', status: 500, ...error });
         });
     } else {
       console.log('Incorrect request type. Only POST request supported');

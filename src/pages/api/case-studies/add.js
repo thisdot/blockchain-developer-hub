@@ -29,7 +29,7 @@ export default async function handler(req, res) {
         } else {
           status = 404;
           resp = {
-            message: 'An error occured saving case study',
+            message: 'An error occurred saving case study',
           };
         }
       }
