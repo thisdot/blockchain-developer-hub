@@ -7,6 +7,8 @@ import { useCallback, useState } from 'react';
 import NoItemPlaceholder from '@/components/NoItemPlaceholder';
 import HeadingHash from '@/components/HeadingHash';
 import { useUserTrackerContext } from '@/context/UserTrackerProvider';
+import { useDataContext } from '@/context/DataProvider';
+import isNewContent from '@/helpers/isNewContent';
 
 function LearnCrypto({ id, name, logo, logoAlt, courses, tutorials }) {
   const {
@@ -19,6 +21,7 @@ function LearnCrypto({ id, name, logo, logoAlt, courses, tutorials }) {
     updateFavCourses,
     updateFavTutorials,
   } = useUserTrackerContext();
+  const { userId, lastLogIn, newCourses, newTutorials } = useDataContext();
   const headingClasses = clsx('subtitle-bold', styles.headings);
   const overviewClasses = clsx('text-md--long', styles.overview);
   const [shareItem, setShareItem] = useState(null);
@@ -52,6 +55,68 @@ function LearnCrypto({ id, name, logo, logoAlt, courses, tutorials }) {
     [favTutorials]
   );
 
+  const getCourses = useCallback(() => {
+    let courses_data = courses?.data.slice();
+    if (userId && lastLogIn) {
+      const favoriteCourses = courses_data.filter(({ title }) => {
+        const result = isNewContent(newCourses, lastLogIn, title);
+        if (checkFavCourse(title) && !result) return true;
+      });
+      const newFilteredCourses = courses_data.filter((data) => {
+        const result = isNewContent(newCourses, lastLogIn, data.title);
+        if (result && !checkFavCourse(data.title)) {
+          data.isNew = true;
+          return true;
+        }
+      });
+      const newAndFav = courses_data.filter((data) => {
+        const result = isNewContent(newCourses, lastLogIn, data.title);
+        if (result && checkFavCourse(data.title)) {
+          data.isNew = true;
+          return true;
+        }
+      });
+      const otherCourses = courses_data.filter(({ title }) => {
+        const result = isNewContent(newCourses, lastLogIn, title);
+        if (!result && !checkFavCourse(title)) return true;
+      });
+
+      courses_data = [...newAndFav, ...favoriteCourses, ...newFilteredCourses, ...otherCourses];
+    }
+    return courses_data;
+  }, [userId, lastLogIn, coursesRead, favCourses, newCourses]);
+
+  const getTutorials = useCallback(() => {
+    let tutorials_data = tutorials?.data.slice();
+    if (userId) {
+      const favouriteTutorials = tutorials_data.filter(({ title }) => {
+        const result = isNewContent(newTutorials, lastLogIn, title);
+        if (checkFavTutorial(title) && !result) return true;
+      });
+      const newFilteredTutorials = tutorials_data.filter((data) => {
+        const result = isNewContent(newTutorials, lastLogIn, data.title);
+        if (result && !checkFavTutorial(data.title)) {
+          data.isNew = true;
+          return true;
+        }
+      });
+      const newAndFav = tutorials_data.filter((data) => {
+        const result = isNewContent(newTutorials, lastLogIn, data.title);
+        if (result && checkFavTutorial(data.title)) {
+          data.isNew = true;
+          return true;
+        }
+      });
+      const otherTutorials = tutorials_data.filter(({ title }) => {
+        const result = isNewContent(newTutorials, lastLogIn, title);
+        if (!result && !checkFavTutorial(title)) return true;
+      });
+
+      tutorials_data = [...newAndFav, ...favouriteTutorials, ...newFilteredTutorials, ...otherTutorials];
+    }
+    return tutorials_data;
+  }, [userId, lastLogIn, tutorialsRead, favTutorials, newTutorials]);
+
   return (
     <div id={id} className={styles.container}>
       <div className={styles.mainContent}>
@@ -66,9 +131,9 @@ function LearnCrypto({ id, name, logo, logoAlt, courses, tutorials }) {
               Courses
             </h3>
             {courses.overview && <p className={overviewClasses}>{courses.overview}</p>}
-            {courses.data ? (
+            {getCourses() ? (
               <div className={styles.cards}>
-                {courses.data.map(({ title, author, image, level, description, href }, index) => (
+                {getCourses().map(({ title, author, image, level, description, href, isNew }, index) => (
                   <Card
                     title={title}
                     subtitle={author}
@@ -77,6 +142,7 @@ function LearnCrypto({ id, name, logo, logoAlt, courses, tutorials }) {
                     image={image}
                     href={href}
                     key={index}
+                    isNew={isNew}
                     favourite={checkFavCourse(title)}
                     read={checkReadCourse(title)}
                     onRead={(value) => updateReadCourses({ title: value })}
@@ -98,9 +164,9 @@ function LearnCrypto({ id, name, logo, logoAlt, courses, tutorials }) {
               Tutorials
             </h3>
             {tutorials.overview && <p className={overviewClasses}>{tutorials.overview}</p>}
-            {tutorials.data ? (
+            {getTutorials() ? (
               <div className={styles.cards}>
-                {tutorials.data.map(({ title, author, description, href }, index) => (
+                {getTutorials().map(({ title, author, description, href, isNew }, index) => (
                   <Card
                     title={title}
                     subtitle={author}
@@ -108,6 +174,7 @@ function LearnCrypto({ id, name, logo, logoAlt, courses, tutorials }) {
                     description={description}
                     onShare={() => setShareItem(href)}
                     key={index}
+                    isNew={isNew}
                     favourite={checkFavTutorial(title)}
                     read={checkReadTutorial(title)}
                     onRead={(value) => updateReadTutorials({ title: value })}
