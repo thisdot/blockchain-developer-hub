@@ -12,6 +12,7 @@ export default async function handler(req, res) {
       const user = await dbUSERS.findOne({ userID: id });
 
       if (user) {
+        const userData = JSON.parse(JSON.stringify(user));
         const result = await dbUSERS.findOneAndUpdate(
           {
             userID: id,
@@ -29,7 +30,7 @@ export default async function handler(req, res) {
           resp = {
             message: 'User logged in successful',
             userId: result.value._id,
-            lastLogIn: user.lastLogIn,
+            lastLogIn: userData.lastLogIn,
           };
         } else {
           resp = {

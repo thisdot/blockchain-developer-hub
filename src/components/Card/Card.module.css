@@ -75,6 +75,13 @@
   border-radius: 100px;
 }
 
+.status_new {
+  width: 49px;
+  background: var(--pink-500);
+  color: var(--white);
+  border-radius: 100px;
+}
+
 .shareBtn {
   background-color: transparent;
   border: none;

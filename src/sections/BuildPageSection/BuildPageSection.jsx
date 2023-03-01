@@ -10,6 +10,8 @@ import { useUserTrackerContext } from '@/context/UserTrackerProvider';
 import { user_activities } from '../../../server/activities';
 import useCheckWorkshop from './useCheckWorkshop';
 import useCheckCaseStudy from './useCheckCaseStudy';
+import { useDataContext } from '@/context/DataProvider';
+import isNewContent from '@/helpers/isNewContent';
 
 function BuildPageSection({ name, overview, items, href }) {
   const [checkReadWorkshop, checkFavWorkshop] = useCheckWorkshop();
@@ -24,6 +26,7 @@ function BuildPageSection({ name, overview, items, href }) {
     updateReadCaseStudies,
     updateFavCaseStudies,
   } = useUserTrackerContext();
+  const { newWorkshops, newCaseStudies, userId, lastLogIn } = useDataContext();
   const headingClasses = clsx('subtitle-bold', styles.headings);
   const overviewClasses = clsx('text-md--long', styles.overview);
   const id = name.replace(/[" "]/g, '').toLowerCase();
@@ -65,6 +68,43 @@ function BuildPageSection({ name, overview, items, href }) {
     }
   };
 
+  const getItems = useCallback(() => {
+    let sorted_items = items.slice();
+
+    const isCaseStudies = user_activities.case_studies === name.toLowerCase();
+    const isWorkshops = user_activities.workshops === name.toLowerCase();
+
+    if ((isCaseStudies || isWorkshops) && userId) {
+      const filter = isCaseStudies ? newCaseStudies : newWorkshops;
+      const favouriteItems = sorted_items.filter(({ title }) => {
+        const result = isNewContent(filter, lastLogIn, title);
+        if (checkFavourite(title) && !result) return true;
+      });
+      const newFilteredItems = sorted_items.filter((data) => {
+        const result = isNewContent(filter, lastLogIn, data.title);
+        if (result && !checkFavourite(data.title)) {
+          data.isNew = true;
+          return true;
+        }
+      });
+      const newAndFav = sorted_items.filter((data) => {
+        const result = isNewContent(filter, lastLogIn, data.title);
+        if (result && checkFavourite(data.title)) {
+          data.isNew = true;
+          return true;
+        }
+      });
+      const otherItems = sorted_items.filter(({ title }) => {
+        const result = isNewContent(filter, lastLogIn, title);
+        if (!result && !checkFavourite(title)) return true;
+      });
+
+      sorted_items = [...newAndFav, ...favouriteItems, ...newFilteredItems, ...otherItems];
+    }
+
+    return sorted_items;
+  }, [favWorkshops, favCaseStudies, newWorkshops, newCaseStudies, userId, lastLogIn]);
+
   const isAllowActivity = useCallback(() => {
     const alllowActivity = [user_activities.case_studies, user_activities.workshops];
     return alllowActivity.includes(name.toLowerCase());
@@ -77,10 +117,13 @@ function BuildPageSection({ name, overview, items, href }) {
         <a href={href}>{name}</a>
       </h1>
       {overview && <p className={overviewClasses}>{overview}</p>}
-      {items.length ? (
+      {getItems().length ? (
         <div className={styles.cards}>
-          {items.map(
-            ({ title, prize, image, description, location, online, on_demand, start_date, end_date, href }, index) => (
+          {getItems().map(
+            (
+              { title, prize, image, description, location, online, on_demand, start_date, end_date, href, isNew },
+              index
+            ) => (
               <Card
                 title={title}
                 prize={prize}
@@ -93,6 +136,7 @@ function BuildPageSection({ name, overview, items, href }) {
                 href={href}
                 image={image}
                 key={index}
+                isNew={isNew}
                 favourite={isAllowActivity() ? checkFavourite(title) : undefined}
                 read={isAllowActivity() ? checkRead(title) : undefined}
                 onRead={(value) => (isAllowActivity() ? updateRead({ title: value }) : undefined)}
