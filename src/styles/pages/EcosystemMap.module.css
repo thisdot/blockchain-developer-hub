@@ -2,20 +2,13 @@
   width: 100%;
   padding-inline: 1rem;
   margin-inline: auto;
-  background: radial-gradient(57.04% 57.03% at 50% 0%, rgba(255, 130, 242, 0.2) 0%, rgba(150, 55, 166, 0.032) 100%),
-  linear-gradient(180deg, #0E1212 0%, rgba(14, 18, 18, 0.32) 100%),
-  linear-gradient(180deg, #0E1212 0%, rgba(14, 18, 18, 0.32) 100%),
-  url(/images/bg.png);
-  background-position: bottom;
-  background-size: auto;
-  background-repeat: no-repeat;
-  background-blend-mode: lighten;
+  background: var(--bg-gradient-4);
   display: flex;
 }
 
 .content {
   width: 100%;
-  max-width: 44rem;
+  max-width: 50rem;
   height: 100%;
   margin: 6.5rem auto;
 }
@@ -29,7 +22,7 @@
 }
 
 .title {
-  background: var(--pink-gradient-100);
+  background: var(--green-gradient-100);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }

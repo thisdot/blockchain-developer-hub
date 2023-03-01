@@ -17,9 +17,7 @@ export default function ExploreMapBanner({ isHomePage, description, children }) 
           target="_blank"
           rel="noopener noreferrer"
           type="primary"
-          text={'Blockchain Ecosystem'}
-          iconPosition="left"
-          icon="grid.svg"
+          text={'Get started'}
           className="explore"
         />
         {!isHomePage && (
@@ -28,7 +26,7 @@ export default function ExploreMapBanner({ isHomePage, description, children }) 
             target="_blank"
             rel="noopener noreferrer"
             type="outline"
-            text={'How to become a blockchain developer'}
+            text={'Check study roadmap'}
             iconPosition="left"
             icon="fork.svg"
             className={styles.blockchain}
