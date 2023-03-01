@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import Svg from '../Svg';
 
 export default function NavLink({ to, type, icon, iconPosition, text, active, className, ...props }) {
-  const classes = clsx('btn-sm--extra-bold', className, styles.navLink, styles[type], {
+  const classes = clsx('btn--extra-bold', className, styles.navLink, styles[type], {
     active: active && type === 'link',
     [styles.iconLeft]: iconPosition === 'left',
     [styles.activeLink]: active,

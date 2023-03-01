@@ -13,11 +13,11 @@ export default function ExploreMapBanner({ isHomePage, description, children }) 
       <p className={descriptionClasses}>{description}</p>
       <div className={clsx(styles.btns, 'btn--extra-bold')}>
         <NavLink
-          to={'https://ecosystem.blockchain.education'}
+          to={'/blockchain101/blockchain'}
           target="_blank"
           rel="noopener noreferrer"
           type="primary"
-          text={'Get started'}
+          text={'Start Here'}
           className="explore"
         />
         {!isHomePage && (
