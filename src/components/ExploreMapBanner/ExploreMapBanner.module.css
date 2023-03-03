@@ -22,6 +22,7 @@
 
 .btns {
   gap: 1rem;
+  width: 100%;
 }
 
 .btns a {
@@ -33,16 +34,20 @@
   border: 1px solid var(--primary-700);
   backdrop-filter: blur(8px);
   text-transform: uppercase;
+  width: 100%;
 }
 
 .btns a:first-child {
-  color: var(--pink-900);
-  background: var(--pink-400);
+  color: var(--dark-green-700);
+  background: var(--green-300);
   backdrop-filter: none;
+  flex-direction: unset;
+  justify-content: center;
+  width: 100%;
 }
 .btns a:first-child:hover {
-  background: var(--pink-500);
-  box-shadow: 0px 0px 8px rgba(254, 66, 235, 0.32), 0px 0px 32px rgba(254, 66, 235, 0.12);
+  background: var(--green-500);
+  box-shadow: var( --green-box-shadow);
 }
 .btns a:first-child:active {
   background: var(--pink-400);
@@ -54,4 +59,18 @@
 }
 .btns a:not(:first-child):active {
   border: 1px solid var(--primary-700);
+}
+
+@media (min-width: 768px) {
+  .btns {
+    flex-direction: row;
+  }
+
+  .btns a {
+    width: unset;
+  }
+
+  .btns a:first-child {
+    max-width: 242px;
+  }
 }

@@ -13,13 +13,11 @@ export default function ExploreMapBanner({ isHomePage, description, children }) 
       <p className={descriptionClasses}>{description}</p>
       <div className={clsx(styles.btns, 'btn--extra-bold')}>
         <NavLink
-          to={'https://ecosystem.blockchain.education'}
+          to={'/blockchain101/blockchain'}
           target="_blank"
           rel="noopener noreferrer"
           type="primary"
-          text={'Blockchain Ecosystem'}
-          iconPosition="left"
-          icon="grid.svg"
+          text={'Start Here'}
           className="explore"
         />
         {!isHomePage && (
@@ -28,7 +26,7 @@ export default function ExploreMapBanner({ isHomePage, description, children }) 
             target="_blank"
             rel="noopener noreferrer"
             type="outline"
-            text={'How to become a blockchain developer'}
+            text={'Check study roadmap'}
             iconPosition="left"
             icon="fork.svg"
             className={styles.blockchain}
