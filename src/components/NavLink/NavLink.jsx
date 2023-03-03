@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import styles from './NavLink.module.css';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
@@ -14,20 +13,18 @@ export default function NavLink({ to, type, icon, iconPosition, text, active, cl
   const iconsName = icon?.split('.')[0];
 
   return (
-    <Link href={to} passHref>
-      <a {...props} className={classes}>
-        <span>{text}</span>
-        {icon && (
-          <Svg
-            className={styles[`icon-${iconPosition}`]}
-            height="20"
-            width="20"
-            href={`/icons/${icon}`}
-            title={iconsName}
-          />
-        )}
-      </a>
-    </Link>
+    <a {...props} href={to} className={classes}>
+      <span>{text}</span>
+      {icon && (
+        <Svg
+          className={styles[`icon-${iconPosition}`]}
+          height="20"
+          width="20"
+          href={`/icons/${icon}`}
+          title={iconsName}
+        />
+      )}
+    </a>
   );
 }
 

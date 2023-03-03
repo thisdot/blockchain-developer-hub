@@ -1,13 +1,12 @@
-import { useWalletModal } from '@solana/wallet-adapter-react-ui';
 import PropTypes from 'prop-types';
-import { useCallback } from 'react';
+import { useWeb3Modal } from '@web3modal/react';
 
 const WalletModalBtn = ({ children, ...props }) => {
-  const { visible, setVisible } = useWalletModal();
+  const { open } = useWeb3Modal();
 
-  const handleClick = useCallback(() => {
-    setVisible(!visible);
-  }, [visible]);
+  const handleClick = async () => {
+    await open({ route: 'ConnectWallet' });
+  };
 
   return (
     <button {...props} onClick={handleClick}>

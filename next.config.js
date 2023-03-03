@@ -1,5 +1,9 @@
+const NEXT_WALLET_PROJECT_ID = process.env.NEXT_WALLET_PROJECT_ID;
 module.exports = {
   reactStrictMode: true,
+  env: {
+    NEXT_WALLET_PROJECT_ID,
+  },
   webpack: (config) => {
     config.module.rules.push(
       {
