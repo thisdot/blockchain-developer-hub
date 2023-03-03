@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useWallet } from '@solana/wallet-adapter-react';
 import useLearnContents from './useLearnContents';
+import { useAccount } from 'wagmi';
 
 const DataContext = createContext({
   userId: null,
@@ -11,13 +11,14 @@ const DataContext = createContext({
   newTutorials: [],
   newWorkshops: [],
   newCaseStudies: [],
+  setUserId: () => {},
   setNewWorkshops: () => {},
   setNewCaseStudies: () => {},
   setNewCourses: () => {},
   setNewTutorials: () => {},
 });
 export const DataProvider = (props) => {
-  const { publicKey, connected } = useWallet();
+  const { address, isConnected } = useAccount();
   const [userId, setUserId] = useState(null);
   const [lastLogIn, setLastLogIn] = useState(null);
   const [authenticating, setAuthenticating] = useState(false);
@@ -38,7 +39,7 @@ export const DataProvider = (props) => {
     const last_log = sessionStorage.getItem('last_log');
     const resp = await fetch('/api/user/auth', {
       method: 'POST',
-      body: JSON.stringify({ id: publicKey.toBase58() }),
+      body: JSON.stringify({ id: address }),
     });
 
     const status = resp.status;
@@ -57,12 +58,12 @@ export const DataProvider = (props) => {
   };
 
   useEffect(() => {
-    if (connected && publicKey && !userId) {
+    if (isConnected && address) {
       getUserId();
     } else {
       setUserId(null);
     }
-  }, [connected, publicKey]);
+  }, [isConnected, address]);
 
   return (
     <DataContext.Provider
@@ -74,6 +75,7 @@ export const DataProvider = (props) => {
         newTutorials,
         newWorkshops,
         newCaseStudies,
+        setUserId,
         setNewWorkshops,
         setNewCaseStudies,
         setNewCourses,

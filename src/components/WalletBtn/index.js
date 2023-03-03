@@ -1,16 +1,17 @@
-import { useWalletModal } from '@solana/wallet-adapter-react-ui';
 import WalletModalBtn from '../WalletModalBtn';
-import WalletConnectBtn from '../WalletConnectBtn';
 import styles from './WalletBtn.module.css';
-import { useWallet } from '@solana/wallet-adapter-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { useDataContext } from '@/context/DataProvider';
+import { useAccount, useDisconnect } from 'wagmi';
+import { useWeb3Modal } from '@web3modal/react';
+import WalletAvatar from '@/icons/wallet-avatar.svg';
 
 const WalletBtn = () => {
-  const { publicKey, wallet, disconnect } = useWallet();
-  const { authenticating, userId } = useDataContext();
-  const { setVisible } = useWalletModal();
+  const { address, isConnected, isConnecting } = useAccount();
+  const { disconnect } = useDisconnect();
+  const { authenticating, userId, setUserId } = useDataContext();
+  const { open } = useWeb3Modal();
   const [active, setActive] = useState(false);
   const ref = useRef(null);
   const dropdownListClasses = clsx(
@@ -21,15 +22,15 @@ const WalletBtn = () => {
     styles.dropdown_list
   );
 
-  const base58 = useMemo(() => publicKey?.toBase58(), [publicKey]);
   const content = useMemo(() => {
-    if (!wallet || !base58) return null;
-    return base58.slice(0, 4) + '..' + base58.slice(-4);
-  }, [wallet, base58]);
+    if (!isConnected || !address) return null;
+    return address.slice(0, 4) + '..' + address.slice(-4);
+  }, [isConnected, address]);
 
-  const changeWallet = () => {
-    setVisible(true);
+  const changeWallet = async () => {
+    disconnect();
     setActive(false);
+    await open({ route: 'ConnectWallet' });
   };
 
   const openDropdown = useCallback(() => {
@@ -41,11 +42,12 @@ const WalletBtn = () => {
   }, []);
 
   const isWalletInstalled = useCallback(() => {
-    return wallet && wallet.readyState === 'Installed';
-  }, [wallet]);
+    return isConnected && address;
+  }, [address, isConnected]);
 
   const logOut = () => {
     disconnect();
+    setUserId(null);
     closeDropdown();
     sessionStorage.removeItem('last_log');
   };
@@ -69,7 +71,7 @@ const WalletBtn = () => {
     };
   }, [ref, closeDropdown]);
 
-  if (!wallet || (!userId && !authenticating)) {
+  if (!isWalletInstalled() || (!userId && !authenticating)) {
     return (
       <div className={clsx(styles.dropdown_wrapper)}>
         <WalletModalBtn className={clsx('btn-sm--extra-bold', styles.btn_connect)} />
@@ -77,28 +79,16 @@ const WalletBtn = () => {
     );
   }
 
-  if (!base58 && isWalletInstalled()) {
-    return (
-      <div className={clsx(styles.dropdown_wrapper)}>
-        <WalletConnectBtn className={clsx('btn-sm--extra-bold', styles.btn_connect)} />
-      </div>
-    );
-  }
-
   return (
     <div className={styles.dropdown_wrapper}>
-      <button
-        title={wallet ? wallet.adapter.name : 'disconnected'}
-        className={clsx('btn-sm--extra-bold', styles.wallet_btn_dropdown)}
-        disabled={authenticating}
-      >
-        {authenticating ? (
+      <button className={clsx('btn-sm--extra-bold', styles.wallet_btn_dropdown)} disabled={authenticating}>
+        {isConnecting ? (
           <small style={{ flex: 1 }}>Connecting...</small>
         ) : isWalletInstalled() ? (
           <>
             {content && <small>{content}</small>}
             <div onClick={openDropdown} className={styles.dropdown_icons}>
-              <img src={wallet.adapter.icon} alt={wallet.adapter.name + 'image'} className={styles.avatar} />
+              <WalletAvatar />
               <img src={'/icons/dropdown.svg'} alt={'dropdown image'} />
             </div>
           </>

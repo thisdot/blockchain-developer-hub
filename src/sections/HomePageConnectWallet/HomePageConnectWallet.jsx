@@ -2,13 +2,13 @@ import styles from './HomePageConnectWallet.module.css';
 import clsx from 'clsx';
 import WalletModalBtn from '@/components/WalletModalBtn';
 import { useDataContext } from '@/context/DataProvider';
-import { useWallet } from '@solana/wallet-adapter-react';
+import { useAccount } from 'wagmi';
 
 const HomePageConnectWallet = () => {
   const { authenticating } = useDataContext();
-  const { publicKey } = useWallet();
+  const { address, isConnected } = useAccount();
 
-  if (publicKey) {
+  if (address && isConnected) {
     return null;
   }
 
